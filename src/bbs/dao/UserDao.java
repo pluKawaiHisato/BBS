@@ -126,6 +126,33 @@ public class UserDao
 		}
 	}
 
+	public List<User> getUser(Connection connection)
+	{
+
+		PreparedStatement ps = null;
+		try
+		{
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT * FROM users");
+
+
+			ps = connection.prepareStatement(sql.toString());
+
+			ResultSet rs = ps.executeQuery();
+			List<User> ret = toUserList(rs);
+
+			return ret;
+		}
+		catch (SQLException e)
+		{
+			throw new SQLRuntimeException(e);
+		}
+		finally
+		{
+			close(ps);
+		}
+	}
+
 //	public void update(Connection connection, User user)
 //	{
 //		PreparedStatement ps = null;

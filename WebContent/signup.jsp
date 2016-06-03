@@ -45,7 +45,7 @@
 	<input name="postId" value="${editUser.branchId}" id="postId"/> <br />
 
 	<input type="submit" value="登録" /> <br />
-	<a href="./">戻る</a>
+	<a href="manageUser">戻る</a>
 </form>
 </div>
 

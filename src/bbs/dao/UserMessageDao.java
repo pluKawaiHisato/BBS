@@ -13,9 +13,11 @@ import java.util.List;
 import bbs.beans.UserMessage;
 import bbs.exception.SQLRuntimeException;
 
-public class UserMessageDao {
+public class UserMessageDao
+{
 
-	public List<UserMessage> getUserMessages(Connection connection, int num) {
+	public List<UserMessage> getUserMessages(Connection connection, int num)
+	{
 
 		PreparedStatement ps = null;
 		try

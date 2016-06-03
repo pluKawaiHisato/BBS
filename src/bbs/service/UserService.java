@@ -4,6 +4,7 @@ import static bbs.utils.CloseableUtil.*;
 import static bbs.utils.DBUtil.*;
 
 import java.sql.Connection;
+import java.util.List;
 
 import bbs.beans.User;
 import bbs.dao.UserDao;
@@ -36,6 +37,38 @@ public class UserService
 			close(connection);
 		}
 	}
+	public List<User> getUser()
+	{
+
+		Connection connection = null;
+
+		try
+		{
+			connection = getConnection();
+
+			UserDao userDao = new UserDao();
+			List<User> ret = userDao.getUser(connection);
+
+			commit(connection);
+
+			return ret;
+		}
+		catch (RuntimeException e)
+		{
+			rollback(connection);
+			throw e;
+		}
+		catch (Error e)
+		{
+			rollback(connection);
+			throw e;
+		}
+		finally
+		{
+			close(connection);
+		}
+	}
+}
 
 //	public User getUser(int userId)
 //	{
@@ -97,4 +130,4 @@ public class UserService
 //			close(connection);
 //		}
 //	}
-}
+

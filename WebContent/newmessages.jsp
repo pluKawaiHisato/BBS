@@ -36,7 +36,10 @@
 			<textarea name="text" cols="70" rows="15" class="newMessage-box"></textarea>
 			<br />
 			<input type="submit" value="新規投稿">
-			<a href="home">戻る</a>
+			<br />
+
+		<br />
+		<a href="home">戻る</a>
 	</div>
 
 </form>
