@@ -38,8 +38,17 @@
 	<label for="checkPassword">パスワード(確認)</label>
 	<input name="checkPassword" type="password" id="checkPassword"/> <br />
 
-	<label for="branchId">支店</label>
-	<input name="branchId" value="${editUser.branchId}" id="branchId"/> <br />
+	<label for="postId">支店</label>
+	<select name="branch">
+		<option value="">(選択してください)</option>
+		<option value="">東京本社</option>
+		<option value="">大阪支店</option>
+		<option value="">名古屋支店</option>
+		<option value="">福岡支店</option>
+		<option value="">秋田支店</option>
+		<option value="">沖縄支店</option>
+	</select>
+	<br />
 
 	<label for="postId">部署・役職</label>
 	<input name="postId" value="${editUser.branchId}" id="postId"/> <br />

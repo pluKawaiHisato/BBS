@@ -45,7 +45,7 @@ public class SignUpServlet extends HttpServlet {
 
 			new UserService().register(editUser);
 
-			response.sendRedirect("home.jsp");
+			response.sendRedirect("home");
 		}
 		else
 		{
