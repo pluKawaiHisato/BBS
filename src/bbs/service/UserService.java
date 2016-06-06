@@ -68,7 +68,7 @@ public class UserService
 			close(connection);
 		}
 	}
-}
+
 
 //	public User getUser(int userId)
 //	{
@@ -100,34 +100,90 @@ public class UserService
 //		}
 //	}
 
-//	public void update(User user)
-//	{
-//		Connection connection = null;
-//		try
-//		{
-//			connection = getConnection();
-//
-//			String encPassword = CipherUtil.encrypt(user.getPassword());
-//			user.setPassword(encPassword);
-//
-//			UserDao userDao = new UserDao();
-//			userDao.update(connection, user);
-//
-//			commit(connection);
-//		}
-//		catch (RuntimeException e)
-//		{
-//			rollback(connection);
-//			throw e;
-//		}
-//		catch (Error e)
-//		{
-//			rollback(connection);
-//			throw e;
-//		}
-//		finally
-//		{
-//			close(connection);
-//		}
-//	}
+	public void lock(int userId)
+	{
+		Connection connection = null;
+		try
+		{
+			connection = getConnection();
 
+			UserDao userDao = new UserDao();
+			userDao.lock(connection, userId);
+
+			commit(connection);
+		}
+		catch (RuntimeException e)
+		{
+			rollback(connection);
+			throw e;
+		}
+		catch (Error e)
+		{
+			rollback(connection);
+			throw e;
+		}
+		finally
+		{
+			close(connection);
+		}
+	}
+
+	public void release(int userId)
+	{
+		Connection connection = null;
+		try
+		{
+			connection = getConnection();
+
+			UserDao userDao = new UserDao();
+			userDao.release(connection, userId);
+
+			commit(connection);
+		}
+		catch (RuntimeException e)
+		{
+			rollback(connection);
+			throw e;
+		}
+		catch (Error e)
+		{
+			rollback(connection);
+			throw e;
+		}
+		finally
+		{
+			close(connection);
+		}
+	}
+
+	public void update(User user)
+	{
+		Connection connection = null;
+		try
+		{
+			connection = getConnection();
+
+			String encPassword = CipherUtil.encrypt(user.getPassword());
+			user.setPassword(encPassword);
+
+			UserDao userDao = new UserDao();
+			userDao.update(connection, user);
+
+			commit(connection);
+		}
+		catch (RuntimeException e)
+		{
+			rollback(connection);
+			throw e;
+		}
+		catch (Error e)
+		{
+			rollback(connection);
+			throw e;
+		}
+		finally
+		{
+			close(connection);
+		}
+	}
+}

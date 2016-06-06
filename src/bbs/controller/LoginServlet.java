@@ -31,6 +31,7 @@ public class LoginServlet extends HttpServlet
 
 		String loginId = request.getParameter("loginId");
 		String password = request.getParameter("password");
+//		int status =Integer.parseInt(request.getParameter("status"));
 
 		LoginService loginService = new LoginService();
 		User user =loginService.login(loginId,password);
@@ -39,13 +40,22 @@ public class LoginServlet extends HttpServlet
 
 		//User loginUser = getLoginUser(request);
 		session.setAttribute("loginUser", user);
-		if (user != null) {
+		if (user != null)
+		{
+			if ( user.getStatus() == 1)
+			{
+				List<String> messages = new ArrayList<String>();
+				messages.add("このアカウントは現在使用できません");
+				session.setAttribute("errorMessages", messages);
+				response.sendRedirect("login");
+			} else {
+				response.sendRedirect("home");
+	//			session.removeAttribute("loginUser");
+			}
 
-			System.out.println(user.getName());
-			response.sendRedirect("home");
-//			session.removeAttribute("loginUser");
-
-		} else {
+		}
+		else
+		{
 			List<String> messages = new ArrayList<String>();
 			messages.add("ログインに失敗しました。");
 			session.setAttribute("errorMessages", messages);

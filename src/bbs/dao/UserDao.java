@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bbs.beans.User;
+import bbs.exception.NoRowsUpdatedRuntimeException;
 import bbs.exception.SQLRuntimeException;
 
 public class UserDao
@@ -153,50 +154,120 @@ public class UserDao
 		}
 	}
 
-//	public void update(Connection connection, User user)
-//	{
-//		PreparedStatement ps = null;
-//		try
-//		{
-//			StringBuilder sql = new StringBuilder();
-//			sql.append("UPDATE user SET");
-//			sql.append(" account = ?");
-//			sql.append(", name = ?");
-//			sql.append(", email = ?");
-//			sql.append(", password = ?");
-//			sql.append(", description = ?");
-//			sql.append(", update_date = CURRENT_TIMESTAMP");
-//			sql.append(" WHERE");
-//			sql.append(" id = ?");
-//			sql.append(" AND");
-//			sql.append(" update_date = ?");
-//
-//			ps = connection.prepareStatement(sql.toString());
-//
-//			ps.setString(1, user.getAccount());
-//			ps.setString(2, user.getName());
-//			ps.setString(3, user.getEmail());
-//			ps.setString(4, user.getPassword());
-//			ps.setString(5, user.getDescription());
-//			ps.setInt(6, user.getId());
-//			ps.setTimestamp(7, new Timestamp(user.getUpdateDate().getTime()));
-//
-//			System.out.println(ps);
-//			int count = ps.executeUpdate();
-//			if (count == 0)
-//			{
-//				throw new NoRowsUpdatedRuntimeException();
-//			}
-//		}
-//		catch (SQLException e)
-//		{
-//			throw new SQLRuntimeException(e);
-//		}
-//		finally
-//		{
-//			close(ps);
-//		}
-//	}
+	public void update(Connection connection, User user)
+	{
+		PreparedStatement ps = null;
+		try
+		{
+			StringBuilder sql = new StringBuilder();
+			sql.append("UPDATE user SET");
+			sql.append("INSERT INTO bbs.users ( ");
+			sql.append("login_id");
+			sql.append(", name");
+			sql.append(", branch_id");
+			sql.append(", password");
+			sql.append(", post_id");
+			sql.append(", status");
+
+			sql.append(" WHERE");
+			sql.append(" id = ?");
+			sql.append(" AND");
+			sql.append(" update_date = ?");
+
+			ps = connection.prepareStatement(sql.toString());
+
+			ps.setString(1, user.getLoginId());
+			ps.setString(2, user.getName());
+			ps.setInt(3, user.getBranchId());
+			ps.setString(4, user.getPassword());
+			ps.setInt(5, user.getPostId());
+			ps.setInt(6, user.getId());
+			ps.setInt(7, user.getStatus());
+
+			System.out.println(ps);
+			int count = ps.executeUpdate();
+			if (count == 0)
+			{
+				throw new NoRowsUpdatedRuntimeException();
+			}
+		}
+		catch (SQLException e)
+		{
+			throw new SQLRuntimeException(e);
+		}
+		finally
+		{
+			close(ps);
+		}
+	}
+
+	public void lock(Connection connection, int userId)
+	{
+		PreparedStatement ps = null;
+		try
+		{
+			StringBuilder sql = new StringBuilder();
+			sql.append("UPDATE users SET");
+
+				sql.append(" status = ?");
+				sql.append(" WHERE");
+				sql.append(" id = ?");
+
+				ps = connection.prepareStatement(sql.toString());
+
+				ps.setInt(1, 1);
+				ps.setInt(2, userId);
+
+				System.out.println(ps);
+				int count = ps.executeUpdate();
+				if (count == 0)
+				{
+					throw new NoRowsUpdatedRuntimeException();
+				}
+			}
+			catch (SQLException e)
+			{
+				throw new SQLRuntimeException(e);
+			}
+			finally
+			{
+				close(ps);
+			}
+	}
+
+	public void release(Connection connection, int userId)
+	{
+		PreparedStatement ps = null;
+		try
+		{
+			StringBuilder sql = new StringBuilder();
+			sql.append("UPDATE users SET");
+
+				sql.append(" status = ?");
+				sql.append(" WHERE");
+				sql.append(" id = ?");
+
+				ps = connection.prepareStatement(sql.toString());
+
+				ps.setInt(1, 0);
+				ps.setInt(2, userId);
+
+				System.out.println(ps);
+				int count = ps.executeUpdate();
+				if (count == 0)
+				{
+					throw new NoRowsUpdatedRuntimeException();
+				}
+			}
+			catch (SQLException e)
+			{
+				throw new SQLRuntimeException(e);
+			}
+			finally
+			{
+				close(ps);
+			}
+	}
 
 //	public User getUser(Connection connection, int id)
 //	{

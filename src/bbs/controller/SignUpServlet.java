@@ -28,8 +28,7 @@ public class SignUpServlet extends HttpServlet {
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws IOException, ServletException
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
 	{
 
 		List<String> messages = new ArrayList<String>();
@@ -45,7 +44,7 @@ public class SignUpServlet extends HttpServlet {
 
 			new UserService().register(editUser);
 
-			response.sendRedirect("home");
+			response.sendRedirect("manageUser");
 		}
 		else
 		{
@@ -90,8 +89,8 @@ public class SignUpServlet extends HttpServlet {
 		editUser.setLoginId(request.getParameter("loginId"));
 		editUser.setName(request.getParameter("name"));
 		editUser.setPassword(request.getParameter("password"));
-		editUser.setBranchId(Integer.valueOf(request.getParameter("branchId")));
-		editUser.setPostId(Integer.valueOf(request.getParameter("postId")));
+		editUser.setBranchId(Integer.parseInt(request.getParameter("branch")));
+		editUser.setPostId(Integer.parseInt(request.getParameter("post")));
 
 		return editUser;
 	}
