@@ -160,7 +160,7 @@ public class UserDao
 		try
 		{
 			StringBuilder sql = new StringBuilder();
-			sql.append("UPDATE user SET");
+			sql.append("UPDATE users SET");
 			sql.append("INSERT INTO bbs.users ( ");
 			sql.append("login_id");
 			sql.append(", name");
@@ -208,31 +208,30 @@ public class UserDao
 		{
 			StringBuilder sql = new StringBuilder();
 			sql.append("UPDATE users SET");
+			sql.append(" status = ?");
+			sql.append(" WHERE");
+			sql.append(" id = ?");
 
-				sql.append(" status = ?");
-				sql.append(" WHERE");
-				sql.append(" id = ?");
+			ps = connection.prepareStatement(sql.toString());
 
-				ps = connection.prepareStatement(sql.toString());
+			ps.setInt(1, 1);
+			ps.setInt(2, userId);
 
-				ps.setInt(1, 1);
-				ps.setInt(2, userId);
-
-				System.out.println(ps);
-				int count = ps.executeUpdate();
-				if (count == 0)
-				{
-					throw new NoRowsUpdatedRuntimeException();
-				}
-			}
-			catch (SQLException e)
+			System.out.println(ps);
+			int count = ps.executeUpdate();
+			if (count == 0)
 			{
-				throw new SQLRuntimeException(e);
+				throw new NoRowsUpdatedRuntimeException();
 			}
-			finally
-			{
-				close(ps);
-			}
+		}
+		catch (SQLException e)
+		{
+			throw new SQLRuntimeException(e);
+		}
+		finally
+		{
+			close(ps);
+		}
 	}
 
 	public void release(Connection connection, int userId)
@@ -242,65 +241,64 @@ public class UserDao
 		{
 			StringBuilder sql = new StringBuilder();
 			sql.append("UPDATE users SET");
+			sql.append(" status = ?");
+			sql.append(" WHERE");
+			sql.append(" id = ?");
 
-				sql.append(" status = ?");
-				sql.append(" WHERE");
-				sql.append(" id = ?");
+			ps = connection.prepareStatement(sql.toString());
 
-				ps = connection.prepareStatement(sql.toString());
+			ps.setInt(1, 0);
+			ps.setInt(2, userId);
 
-				ps.setInt(1, 0);
-				ps.setInt(2, userId);
-
-				System.out.println(ps);
-				int count = ps.executeUpdate();
-				if (count == 0)
-				{
-					throw new NoRowsUpdatedRuntimeException();
-				}
-			}
-			catch (SQLException e)
+			System.out.println(ps);
+			int count = ps.executeUpdate();
+			if (count == 0)
 			{
-				throw new SQLRuntimeException(e);
+				throw new NoRowsUpdatedRuntimeException();
 			}
-			finally
-			{
-				close(ps);
-			}
+		}
+		catch (SQLException e)
+		{
+			throw new SQLRuntimeException(e);
+		}
+		finally
+		{
+			close(ps);
+		}
 	}
 
-//	public User getUser(Connection connection, int id)
-//	{
-//		PreparedStatement ps = null;
-//		try
-//		{
-//			String sql = "SELECT * FROM user WHERE id = ?";
-//
-//			ps = connection.prepareStatement(sql);
-//			ps.setInt(1, id);
-//
-//			ResultSet rs = ps.executeQuery();
-//			List<User> userList = toUserList(rs);
-//			if (userList.isEmpty() == true)
-//			{
-//				return null;
-//			}
-//			else if (2 <= userList.size())
-//			{
-//				throw new IllegalStateException("2 <= userList.size()");
-//			}
-//			else
-//			{
-//				return userList.get(0);
-//			}
-//		}
-//		catch (SQLException e)
-//		{
-//			throw new SQLRuntimeException(e);
-//		}
-//		finally
-//		{
-//			close(ps);
-//		}
-//	}
+	public User getSelectUser(Connection connection, int userId)
+	{
+		PreparedStatement ps = null;
+		try
+		{
+			String sql = "SELECT * FROM users WHERE id = ?";
+
+			ps = connection.prepareStatement(sql);
+			ps.setInt(1, userId);
+
+			ResultSet rs = ps.executeQuery();
+			List<User> userList = toUserList(rs);
+			if (userList.isEmpty() == true)
+			{
+				return null;
+			}
+			else if (2 <= userList.size())
+			{
+				throw new IllegalStateException("2 <= userList.size()");
+			}
+			else
+			{
+				return userList.get(0);
+			}
+		}
+		catch (SQLException e)
+		{
+			throw new SQLRuntimeException(e);
+		}
+		finally
+		{
+			close(ps);
+		}
+	}
 }

@@ -39,25 +39,20 @@
 	<input name="checkPassword" type="password" id="checkPassword"/> <br />
 
 	<label for="branchId">支店</label>
-	<select name="branch">
+	<select name="branch" id =branchId>
 		<option value="">(選択してください)</option>
-		<option value="1">東京本社</option>
-		<option value="2">大阪支店</option>
-		<option value="3">名古屋支店</option>
-		<option value="4">福岡支店</option>
-		<option value="5">秋田支店</option>
-		<option value="6">沖縄支店</option>
+		<c:forEach items="${branches}" var="branch">
+			<option value="${branch.id}"><c:out value="${branch.getName()}" /></option>
+		</c:forEach>
 	</select>
 	<br />
 
 	<label for="postId">部署・役職</label>
-	<select name="post">
+	<select name="post" id=postId>
 		<option value="">(選択してください)</option>
-		<option value="1">執行役員</option>
-		<option value="2">部長</option>
-		<option value="3">人事部</option>
-		<option value="4">管理部</option>
-		<option value="5">その他</option>
+		<c:forEach items="${posts}" var="post">
+			<option value="${post.id}"><c:out value="${post.getName()}" /></option>
+		</c:forEach>
 	</select>
 	<br />
 

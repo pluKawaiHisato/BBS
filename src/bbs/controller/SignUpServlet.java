@@ -13,7 +13,11 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 
+import bbs.beans.Branch;
+import bbs.beans.Post;
 import bbs.beans.User;
+import bbs.service.BranchService;
+import bbs.service.PostService;
 import bbs.service.UserService;
 
 @WebServlet(urlPatterns = { "/signup" })
@@ -24,6 +28,12 @@ public class SignUpServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws IOException, ServletException
 	{
+		List<Branch> branches = new BranchService().getBranch();
+		request.setAttribute("branches", branches);
+
+		List<Post> posts = new PostService().getPost();
+		request.setAttribute("posts", posts);
+
 		request.getRequestDispatcher("signup.jsp").forward(request, response);
 	}
 

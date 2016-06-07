@@ -70,35 +70,35 @@ public class UserService
 	}
 
 
-//	public User getUser(int userId)
-//	{
-//		Connection connection = null;
-//		try
-//		{
-//			connection = getConnection();
-//
-//			UserDao userDao = new UserDao();
-//			User user = userDao.getUser(connection, userId);
-//
-//			commit(connection);
-//
-//			return user;
-//		}
-//		catch (RuntimeException e)
-//		{
-//			rollback(connection);
-//			throw e;
-//		}
-//		catch (Error e)
-//		{
-//			rollback(connection);
-//			throw e;
-//		}
-//		finally
-//		{
-//			close(connection);
-//		}
-//	}
+	public User getSelectUser(int userId)
+	{
+		Connection connection = null;
+		try
+		{
+			connection = getConnection();
+
+			UserDao userDao = new UserDao();
+			User user = userDao.getSelectUser(connection, userId);
+
+			commit(connection);
+
+			return user;
+		}
+		catch (RuntimeException e)
+		{
+			rollback(connection);
+			throw e;
+		}
+		catch (Error e)
+		{
+			rollback(connection);
+			throw e;
+		}
+		finally
+		{
+			close(connection);
+		}
+	}
 
 	public void lock(int userId)
 	{
@@ -162,9 +162,6 @@ public class UserService
 		try
 		{
 			connection = getConnection();
-
-			String encPassword = CipherUtil.encrypt(user.getPassword());
-			user.setPassword(encPassword);
 
 			UserDao userDao = new UserDao();
 			userDao.update(connection, user);
