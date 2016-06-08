@@ -35,6 +35,38 @@ public class MessageService {
 		}
 	}
 
+	public List<UserMessage> getCategorySearchMessages()
+	{
+		Connection connection = null;
+		String category = null;
+		try
+		{
+			connection = getConnection();
+
+
+			UserMessageDao csMessageDao = new UserMessageDao();
+			List<UserMessage> ret = csMessageDao.getCategorySearchMessages(connection, category, LIMIT_NUM);
+
+			commit(connection);
+
+			return ret;
+		}
+		catch (RuntimeException e)
+		{
+			rollback(connection);
+			throw e;
+		}
+		catch (Error e)
+		{
+			rollback(connection);
+			throw e;
+		}
+		finally
+		{
+			close(connection);
+		}
+	}
+
 	private static final int LIMIT_NUM = 1000;
 
 	public List<UserMessage> getMessage()
@@ -45,8 +77,9 @@ public class MessageService {
 		{
 			connection = getConnection();
 
-			UserMessageDao messageDao = new UserMessageDao();
-			List<UserMessage> ret = messageDao.getUserMessages(connection, LIMIT_NUM);
+
+			UserMessageDao allMessageDao = new UserMessageDao();
+			List<UserMessage> ret = allMessageDao.getUserMessages(connection, LIMIT_NUM);
 
 			commit(connection);
 

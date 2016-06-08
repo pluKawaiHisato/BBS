@@ -22,6 +22,21 @@
 		<a href="manageUser">ユーザー管理画面</a>
 		<a href="logout">ログアウト</a>
 
+	<form action="home" method="get"><br />
+		<div class="categorySearch">
+			<br />
+			カテゴリー検索
+			<select name="category">
+				<option value="">(選択してください)</option>
+				<option value="予定">予定</option>
+				<option value="人事">人事</option>
+				<option value="イベント">イベント</option>
+			</select>
+			<input type="submit" value="検索する">home?category=${message.category}
+			<br />
+		</div>
+	</form>
+
 
 		<div class="messages">
 			<c:forEach items="${messages}" var="message">
@@ -40,7 +55,7 @@
 					<br />
 					-- コメント --
 
-
+					<br />
 						<div class="comments">
 							<c:forEach items="${comments}" var="comment">
 								<div class="comment">
@@ -55,7 +70,6 @@
 
 									</c:if>
 								</div>
-								<br />
 							</c:forEach>
 						</div>
 

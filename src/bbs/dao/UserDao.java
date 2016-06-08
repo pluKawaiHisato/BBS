@@ -161,30 +161,66 @@ public class UserDao
 		{
 			StringBuilder sql = new StringBuilder();
 			sql.append("UPDATE users SET");
-			sql.append("INSERT INTO bbs.users ( ");
-			sql.append("login_id");
-			sql.append(", name");
-			sql.append(", branch_id");
-			sql.append(", password");
-			sql.append(", post_id");
-			sql.append(", status");
+			sql.append(" login_id = ?");
+			sql.append(", name = ?");
+			sql.append(", password = ?");
+			sql.append(", branch_id = ?");
+			sql.append(", post_id = ?");
 
 			sql.append(" WHERE");
 			sql.append(" id = ?");
-			sql.append(" AND");
-			sql.append(" update_date = ?");
 
 			ps = connection.prepareStatement(sql.toString());
+			ps.setString(1, user.getLoginId());
+			ps.setString(2, user.getName());
+			ps.setString(3, user.getPassword());
+			ps.setInt(4, user.getBranchId());
+			ps.setInt(5, user.getPostId());
+			ps.setInt(6, user.getId());
 
+
+
+			int count = ps.executeUpdate();
+			if (count == 0)
+			{
+				throw new NoRowsUpdatedRuntimeException();
+			}
+		}
+		catch (SQLException e)
+		{
+			throw new SQLRuntimeException(e);
+		}
+		finally
+		{
+			close(ps);
+		}
+	}
+
+	public void notPassUpdate(Connection connection, User user)
+	{
+		PreparedStatement ps = null;
+		try
+		{
+			StringBuilder sql = new StringBuilder();
+			sql.append("UPDATE users SET");
+			sql.append(" login_id = ?");
+			sql.append(", name = ?");
+			sql.append(", password = ?");
+			sql.append(", branch_id = ?");
+			sql.append(", post_id = ?");
+
+			sql.append(" WHERE");
+			sql.append(" id = ?");
+
+			ps = connection.prepareStatement(sql.toString());
 			ps.setString(1, user.getLoginId());
 			ps.setString(2, user.getName());
 			ps.setInt(3, user.getBranchId());
-			ps.setString(4, user.getPassword());
-			ps.setInt(5, user.getPostId());
-			ps.setInt(6, user.getId());
-			ps.setInt(7, user.getStatus());
+			ps.setInt(4, user.getPostId());
+			ps.setInt(5, user.getId());
 
-			System.out.println(ps);
+
+
 			int count = ps.executeUpdate();
 			if (count == 0)
 			{

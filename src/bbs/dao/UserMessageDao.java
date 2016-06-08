@@ -43,6 +43,35 @@ public class UserMessageDao
 		}
 	}
 
+	public List<UserMessage> getCategorySearchMessages(Connection connection, String category, int num)
+	{
+
+		PreparedStatement ps = null;
+		try
+		{
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT * FROM users_messages WHERE category = ? ");
+			sql.append("ORDER BY insert_date DESC limit " + num);
+
+			ps = connection.prepareStatement(sql.toString());
+			ps.setString(1, category);
+
+
+			ResultSet rs = ps.executeQuery();
+			List<UserMessage> ret = toUserMessageList(rs);
+
+			return ret;
+		}
+		catch (SQLException e)
+		{
+			throw new SQLRuntimeException(e);
+		}
+		finally
+		{
+			close(ps);
+		}
+	}
+
 	private List<UserMessage> toUserMessageList(ResultSet rs)
 			throws SQLException {
 

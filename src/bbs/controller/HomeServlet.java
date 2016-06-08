@@ -24,10 +24,18 @@ public class HomeServlet extends HttpServlet
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
 	{
 
+//		if(submit.equals("停止する")){
+//
+//		}else{
+//			new UserService().release(editUserId);
+//		}
+
 		List<UserMessage> messages = new MessageService().getMessage();
+		List<UserMessage> csMessages = new MessageService().getCategorySearchMessages();
 		List<UserComment> comments = new CommentService().getComment();
 
 		request.setAttribute("messages", messages);
+		request.setAttribute("csMessages", csMessages);
 		request.setAttribute("comments", comments);
 
 		request.getRequestDispatcher("/home.jsp").forward(request, response);

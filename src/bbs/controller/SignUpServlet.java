@@ -84,8 +84,8 @@ public class SignUpServlet extends HttpServlet {
 			messages.add("確認用パスワードが違います");
 
 		}
-		// TODO アカウントが既に利用されていないか、メールアドレスが既に登録されていないかなどの確認も必要
-		if (messages.size() == 0) {
+		if (messages.size() == 0)
+		{
 			return true;
 		} else {
 			return false;
