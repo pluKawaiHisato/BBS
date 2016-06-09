@@ -10,6 +10,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import bbs.beans.UserMessage;
 import bbs.exception.SQLRuntimeException;
 
@@ -43,19 +45,98 @@ public class UserMessageDao
 		}
 	}
 
-	public List<UserMessage> getCategorySearchMessages(Connection connection, String category, int num)
+	public List<UserMessage> getSearchMessages
+	(Connection connection, String category, String startDate, String endDate)
 	{
 
 		PreparedStatement ps = null;
 		try
 		{
 			StringBuilder sql = new StringBuilder();
-			sql.append("SELECT * FROM users_messages WHERE category = ? ");
-			sql.append("ORDER BY insert_date DESC limit " + num);
+			sql.append("SELECT * FROM users_messages");
+			sql.append(" WHERE 1");
+
+			if (!StringUtils.isEmpty(category))
+			{
+				sql.append(" AND category = ?");
+			}
+			if (!StringUtils.isEmpty(startDate))
+			{
+				sql.append(" AND insert_date >= ?");
+			}
+			if (!StringUtils.isEmpty(endDate))
+			{
+				sql.append(" AND insert_date <= ?");
+			}
+
+			sql.append(" ORDER BY insert_date DESC ");
 
 			ps = connection.prepareStatement(sql.toString());
-			ps.setString(1, category);
+			int i = 1;
+			if (!StringUtils.isEmpty(category))
+			{
+				ps.setString(i++, category);
+			}
+			if (!StringUtils.isEmpty(startDate))
+			{
+				ps.setString(i++, startDate );
+			}
+			if (!StringUtils.isEmpty(endDate))
+			{
+				ps.setString(i++, endDate);
+			}
 
+			ResultSet rs = ps.executeQuery();
+			List<UserMessage> ret = toUserMessageList(rs);
+
+			return ret;
+		}
+		catch (SQLException e)
+		{
+			throw new SQLRuntimeException(e);
+		}
+		finally
+		{
+			close(ps);
+		}
+	}
+
+	public List<UserMessage> getNewestDate(Connection connection)
+	{
+		PreparedStatement ps = null;
+		try
+		{
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT MAX(insert_date) FROM bbs.users_messages ");
+
+
+			ps = connection.prepareStatement(sql.toString());
+
+			ResultSet rs = ps.executeQuery();
+			List<UserMessage> ret = toUserMessageList(rs);
+
+			return ret;
+		}
+		catch (SQLException e)
+		{
+			throw new SQLRuntimeException(e);
+		}
+		finally
+		{
+			close(ps);
+		}
+	}
+
+	public List<UserMessage> getOldestDate(Connection connection)
+	{
+		PreparedStatement ps = null;
+		try
+		{
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT MIN(insert_date) FROM bbs.users_messages ");
+
+
+			ps = connection.prepareStatement(sql.toString());
 
 			ResultSet rs = ps.executeQuery();
 			List<UserMessage> ret = toUserMessageList(rs);
@@ -98,7 +179,6 @@ public class UserMessageDao
 				message.setTitle(title);
 				message.setText(text);
 				message.setInsertDate(insertDate);
-System.out.println(category);
 				ret.add(message);
 			}
 			return ret;
@@ -106,6 +186,56 @@ System.out.println(category);
 			close(rs);
 		}
 	}
+
+	private List<UserMessage> toCategoryList(ResultSet rs) throws SQLException
+	{
+		List<UserMessage> ret = new ArrayList<UserMessage>();
+		try
+		{
+			while (rs.next())
+			{
+				String category = rs.getString("category");
+
+				UserMessage categoryList = new UserMessage();
+
+				categoryList.setCategory(category);
+
+				ret.add(categoryList);
+			}
+			return ret;
+		}
+		finally
+		{
+			close(rs);
+		}
+	}
+	public List<UserMessage> getCategory(Connection connection)
+	{
+
+		PreparedStatement ps = null;
+		try
+		{
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT category FROM users_messages GROUP BY category");
+
+
+			ps = connection.prepareStatement(sql.toString());
+
+			ResultSet rs = ps.executeQuery();
+			List<UserMessage> ret = toCategoryList(rs);
+
+			return ret;
+		}
+		catch (SQLException e)
+		{
+			throw new SQLRuntimeException(e);
+		}
+		finally
+		{
+			close(ps);
+		}
+	}
+
 
 }
 

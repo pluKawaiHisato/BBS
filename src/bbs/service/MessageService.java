@@ -35,17 +35,112 @@ public class MessageService {
 		}
 	}
 
-	public List<UserMessage> getCategorySearchMessages()
+	public List<UserMessage> getCategory()
+	{
+
+		Connection connection = null;
+
+		try
+		{
+			connection = getConnection();
+
+			UserMessageDao userMessageDao = new UserMessageDao();
+			List<UserMessage> ret = userMessageDao.getCategory(connection);
+
+			commit(connection);
+
+			return ret;
+		}
+		catch (RuntimeException e)
+		{
+			rollback(connection);
+			throw e;
+		}
+		catch (Error e)
+		{
+			rollback(connection);
+			throw e;
+		}
+		finally
+		{
+			close(connection);
+		}
+	}
+
+	public List<UserMessage> getNewestDate()
+	{
+
+		Connection connection = null;
+
+		try
+		{
+			connection = getConnection();
+
+			UserMessageDao userMessageDao = new UserMessageDao();
+			List<UserMessage> ret = userMessageDao.getNewestDate(connection);
+
+			commit(connection);
+
+			return ret;
+		}
+		catch (RuntimeException e)
+		{
+			rollback(connection);
+			throw e;
+		}
+		catch (Error e)
+		{
+			rollback(connection);
+			throw e;
+		}
+		finally
+		{
+			close(connection);
+		}
+	}
+
+	public List<UserMessage> getOldestDate()
+	{
+
+		Connection connection = null;
+
+		try
+		{
+			connection = getConnection();
+
+			UserMessageDao userMessageDao = new UserMessageDao();
+			List<UserMessage> ret = userMessageDao.getOldestDate(connection);
+
+			commit(connection);
+
+			return ret;
+		}
+		catch (RuntimeException e)
+		{
+			rollback(connection);
+			throw e;
+		}
+		catch (Error e)
+		{
+			rollback(connection);
+			throw e;
+		}
+		finally
+		{
+			close(connection);
+		}
+	}
+
+	public List<UserMessage> getSearchMessages(String category, String startDate, String endDate)
 	{
 		Connection connection = null;
-		String category = null;
 		try
 		{
 			connection = getConnection();
 
 
-			UserMessageDao csMessageDao = new UserMessageDao();
-			List<UserMessage> ret = csMessageDao.getCategorySearchMessages(connection, category, LIMIT_NUM);
+			UserMessageDao searchMessageDao = new UserMessageDao();
+			List<UserMessage> ret = searchMessageDao.getSearchMessages(connection, category, startDate, endDate);
 
 			commit(connection);
 

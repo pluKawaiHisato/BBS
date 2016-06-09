@@ -23,22 +23,37 @@
 		<a href="logout">ログアウト</a>
 
 	<form action="home" method="get"><br />
-		<div class="categorySearch">
+		<div class="Search">
 			<br />
 			カテゴリー検索
-			<select name="category">
-				<option value="">(選択してください)</option>
-				<option value="予定">予定</option>
-				<option value="人事">人事</option>
-				<option value="イベント">イベント</option>
+
+			<select name="searchCategory" id="category">
+
+				<option value="">(選択しない)</option>
+				<c:forEach items="${categoryList}" var="category">
+
+					<option value="${category.getCategory()}"
+						<c:if test="${selectCategory == category.getCategory()}">selected='selected'</c:if> >
+					<c:out value="${category.getCategory()}" />
+					</option>
+
+				</c:forEach>
 			</select>
-			<input type="submit" value="検索する">home?category=${message.category}
-			<br />
+
+
+			日時検索
+
+			<input type="date" name="startDate" value="oldestDate">
+			～
+			<input type="date" name="endDate" value="newestDate">
+			<input type="submit" value="検索する">
 		</div>
 	</form>
 
 
 		<div class="messages">
+
+
 			<c:forEach items="${messages}" var="message">
 				<div class="message">
 				<br />
@@ -55,6 +70,7 @@
 					<br />
 					-- コメント --
 
+
 					<br />
 						<div class="comments">
 							<c:forEach items="${comments}" var="comment">
@@ -64,14 +80,16 @@
 									<div class="loginId-name">
 										<span class="loginId"><c:out value="${comment.loginId}" /></span>
 										<span class="name"><c:out value="${comment.name}" /></span>
-									<div class="text">本文：<c:out value="${comment.text}" /></div>
+									<div class="text"><c:out value="${comment.text}" /></div>
 									<div class="date"><fmt:formatDate value="${comment.insertDate}" pattern="yyyy/MM/dd HH:mm:ss" /></div>
 									</div>
+									<br />
 
 									</c:if>
 								</div>
 							</c:forEach>
 						</div>
+
 
 					<form action="comment" method="post"><br />
 					<input type="hidden" name="messageId" value="${message.messageId}">

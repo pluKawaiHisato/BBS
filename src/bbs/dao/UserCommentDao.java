@@ -15,14 +15,14 @@ import bbs.exception.SQLRuntimeException;
 
 public class UserCommentDao
 {
-	public List<UserComment> getUserComments(Connection connection, int num)
+	public List<UserComment> getUserComments(Connection connection)
 	{
 		PreparedStatement ps = null;
 		try
 		{
 			StringBuilder sql = new StringBuilder();
 			sql.append("SELECT * FROM users_comments ");
-			sql.append("ORDER BY insert_date DESC limit " + num);
+			sql.append("ORDER BY insert_date DESC ");
 
 			ps = connection.prepareStatement(sql.toString());
 
@@ -56,7 +56,7 @@ public class UserCommentDao
 				int messageId = rs.getInt("message_id");
 				String text = rs.getString("text");
 				Timestamp insertDate = rs.getTimestamp("insert_date");
-System.out.println(messageId);
+
 				UserComment comment = new UserComment();
 				comment.setLoginId(loginId);
 				comment.setName(name);
