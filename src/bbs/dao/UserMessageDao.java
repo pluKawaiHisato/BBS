@@ -107,7 +107,7 @@ public class UserMessageDao
 		try
 		{
 			StringBuilder sql = new StringBuilder();
-			sql.append("SELECT MAX(insert_date) FROM bbs.users_messages ");
+			sql.append("SELECT * FROM bbs.users_messages ORDER BY  insert_date DESC LIMIT 1 ");
 
 
 			ps = connection.prepareStatement(sql.toString());
@@ -133,7 +133,7 @@ public class UserMessageDao
 		try
 		{
 			StringBuilder sql = new StringBuilder();
-			sql.append("SELECT MIN(insert_date) FROM bbs.users_messages ");
+			sql.append("SELECT * FROM bbs.users_messages ORDER BY insert_date LIMIT 1 ");
 
 
 			ps = connection.prepareStatement(sql.toString());

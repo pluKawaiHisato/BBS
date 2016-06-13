@@ -134,7 +134,7 @@ public class UserDao
 		try
 		{
 			StringBuilder sql = new StringBuilder();
-			sql.append("SELECT * FROM users");
+			sql.append("SELECT * FROM users ORDER BY branch_id, post_id");
 
 
 			ps = connection.prepareStatement(sql.toString());

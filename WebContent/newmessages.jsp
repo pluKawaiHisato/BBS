@@ -12,6 +12,17 @@
 <div class="main-contents">
 <form action="newMessages" method="post"><br />
 
+<c:if test="${ not empty errorMessages }">
+	<div class="errorMessages">
+		<ul>
+			<c:forEach items="${errorMessages}" var="message">
+				<li><c:out value="${message}" />
+			</c:forEach>
+		</ul>
+	</div>
+	<c:remove var="errorMessages" scope="session"/>
+</c:if>
+
 カテゴリー :
 	<select name="category">
 		<option value="">(選択してください)</option>
@@ -33,7 +44,7 @@
 
 <div class="form-area">
 	新規投稿 :
-			<textarea name="text" cols="70" rows="15" class="newMessage-box"></textarea>
+			<textarea style="width: 60%; height:90px" name="text" cols="70" rows="15" class="newMessage-box" wrap="hard"></textarea>
 			<br />
 			<input type="submit" value="新規投稿">
 			<br />

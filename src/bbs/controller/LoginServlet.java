@@ -38,7 +38,7 @@ public class LoginServlet extends HttpServlet
 
 		HttpSession session = request.getSession();
 
-		//User loginUser = getLoginUser(request);
+		
 		session.setAttribute("loginUser", user);
 		if (user != null)
 		{
@@ -57,7 +57,7 @@ public class LoginServlet extends HttpServlet
 		else
 		{
 			List<String> messages = new ArrayList<String>();
-			messages.add("ログインに失敗しました。");
+			messages.add("ログインに失敗しました");
 			session.setAttribute("errorMessages", messages);
 			response.sendRedirect("login");
 		}

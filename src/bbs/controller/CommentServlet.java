@@ -43,8 +43,9 @@ public class CommentServlet extends HttpServlet
 		}
 		else
 		{
-			session.setAttribute("errorMessages", messages);
-			response.sendRedirect("newMessages");
+
+			session.setAttribute("ErrorMessages", messages);
+			response.sendRedirect("home");
 		}
 	}
 
@@ -52,6 +53,8 @@ public class CommentServlet extends HttpServlet
 	{
 
 		String comment = request.getParameter("comment");
+
+		System.out.println(comment);
 
 		if (StringUtils.isEmpty(comment) == true)
 		{
