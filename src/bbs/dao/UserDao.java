@@ -51,6 +51,78 @@ public class UserDao
 		}
 	}
 
+	public User getNewCheckSameLoginId(Connection connection, String loginId)
+	{
+		PreparedStatement ps = null;
+		try
+		{
+			String sql = "SELECT * FROM bbs.users WHERE login_id = ?";
+
+			ps = connection.prepareStatement(sql);
+			ps.setString(1, loginId);
+
+
+			ResultSet rs = ps.executeQuery();
+			List<User> userList = toUserList(rs);
+			if (userList.isEmpty() == true)
+			{
+				return null;
+			}
+			else if (2 <= userList.size())
+			{
+				throw new IllegalStateException("2 <= userList.size()");
+			}
+			else
+			{
+				return userList.get(0);
+			}
+		}
+		catch (SQLException e)
+		{
+			throw new SQLRuntimeException(e);
+		}
+		finally
+		{
+			close(ps);
+		}
+	}
+
+	public User getCheckSameLoginId(Connection connection, String loginId, int id)
+	{
+		PreparedStatement ps = null;
+		try
+		{
+			String sql = "SELECT * FROM bbs.users WHERE login_id = ? AND id != ?";
+
+			ps = connection.prepareStatement(sql);
+			ps.setString(1, loginId);
+			ps.setInt(2, id);
+
+			ResultSet rs = ps.executeQuery();
+			List<User> userList = toUserList(rs);
+			if (userList.isEmpty() == true)
+			{
+				return null;
+			}
+			else if (2 <= userList.size())
+			{
+				throw new IllegalStateException("2 <= userList.size()");
+			}
+			else
+			{
+				return userList.get(0);
+			}
+		}
+		catch (SQLException e)
+		{
+			throw new SQLRuntimeException(e);
+		}
+		finally
+		{
+			close(ps);
+		}
+	}
+
 	private List<User> toUserList(ResultSet rs) throws SQLException
 	{
 		List<User> ret = new ArrayList<User>();
@@ -113,7 +185,7 @@ public class UserDao
 			ps.setString(4, user.getPassword());
 			ps.setInt(5, user.getPostId());
 
-			//System.out.println(ps);
+			System.out.println(ps);
 
 			ps.executeUpdate();
 		}
@@ -179,6 +251,7 @@ public class UserDao
 			ps.setInt(6, user.getId());
 
 
+			System.out.println(ps);
 
 			int count = ps.executeUpdate();
 			if (count == 0)
@@ -196,6 +269,8 @@ public class UserDao
 		}
 	}
 
+
+
 	public void notPassUpdate(Connection connection, User user)
 	{
 		PreparedStatement ps = null;
@@ -205,7 +280,6 @@ public class UserDao
 			sql.append("UPDATE users SET");
 			sql.append(" login_id = ?");
 			sql.append(", name = ?");
-			sql.append(", password = ?");
 			sql.append(", branch_id = ?");
 			sql.append(", post_id = ?");
 
@@ -220,7 +294,7 @@ public class UserDao
 			ps.setInt(5, user.getId());
 
 
-
+			System.out.println(ps);
 			int count = ps.executeUpdate();
 			if (count == 0)
 			{
@@ -285,6 +359,35 @@ public class UserDao
 
 			ps.setInt(1, 0);
 			ps.setInt(2, userId);
+
+			int count = ps.executeUpdate();
+			if (count == 0)
+			{
+				throw new NoRowsUpdatedRuntimeException();
+			}
+		}
+		catch (SQLException e)
+		{
+			throw new SQLRuntimeException(e);
+		}
+		finally
+		{
+			close(ps);
+		}
+	}
+
+	public void deleteUser(Connection connection, int userId)
+	{
+		PreparedStatement ps = null;
+		try
+		{
+			StringBuilder sql = new StringBuilder();
+			sql.append("DELETE FROM users");
+			sql.append(" WHERE");
+			sql.append(" id = ?");
+
+			ps = connection.prepareStatement(sql.toString());
+			ps.setInt(1, userId);
 
 			System.out.println(ps);
 			int count = ps.executeUpdate();

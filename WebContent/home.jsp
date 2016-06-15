@@ -10,11 +10,13 @@
 <title>掲示板ホーム画面</title>
 </head>
 <body>
+
+<h3>掲示板ホーム</h3>
 <div class="main-contents">
 
 <div class="header">
 
-		<c:if test="${ loginUser.getPostId() == 3 }">
+		<c:if test="${ loginUser.getPostId() == 1 }">
 		<a href="manageUser">ユーザー管理画面</a>
 		</c:if>
 		<a href="newMessages">新規投稿画面</a>
@@ -28,7 +30,17 @@
 						</c:forEach>
 					</ul>
 
-				<c:remove var="ErrorMessages" scope="session"/>
+				<c:remove var="errorMessages" scope="session"/>
+			</c:if>
+
+			<c:if test="${ not empty completeMessages }">
+			<ul>
+						<c:forEach items="${completerMessages}" var="message">
+							<li><c:out value="${message}" />
+						</c:forEach>
+					</ul>
+
+				<c:remove var="completeMessages" scope="session"/>
 			</c:if>
 
 		<form action="home" method="get">
@@ -105,7 +117,41 @@
 						<div class="category">カテゴリー：<c:out value="${message.category}" /></div>
 						<div class="title">件名：<c:out value="${message.title}" /></div>
 						<div class="text">本文：<pre><c:out value="${message.text}" /></pre></div>
-						<div class="date"><fmt:formatDate value="${message.insertDate}" pattern="yyyy/MM/dd HH:mm:ss" /></div>
+						<div class="date"><fmt:formatDate value="${message.insertDate}" pattern="yyyy/MM/dd HH:mm:ss" />
+
+
+						<form action="home" method="post">
+						<c:if test="${loginUser.postId == 2 }">
+						<input type="hidden" name="messageId" value="${message.messageId}">
+								<input type="submit" name="submit" value="削除する"
+								 		onclick="return confirm('本当にこの記事を削除しますか？')" />
+						</c:if>
+
+						<c:if test="${loginUser.postId == 1 }">
+							<c:if test="${loginUser.id  == message.userId}">
+								<input type="hidden" name="messageId" value="${message.messageId}">
+										<input type="submit" name="submit" value="削除する"
+										 		onclick="return confirm('本当にこの記事を削除しますか？')" />
+							</c:if>
+						</c:if>
+
+						<c:if test="${loginUser.postId == 3 }">
+							<c:if test="${loginUser.branchId == message.branchId }">
+								<input type="hidden" name="messageId" value="${message.messageId}">
+										<input type="submit" name="submit" value="削除する"
+										 		onclick="return confirm('本当にこの記事を削除しますか？')" />
+							</c:if>
+						</c:if>
+
+						<c:if test="${loginUser.postId == 4 }">
+							<c:if test="${loginUser.id  == message.userId}">
+								<input type="hidden" name="messageId" value="${message.messageId}">
+										<input type="submit" name="submit" value="削除する"
+										 		onclick="return confirm('本当にこの記事を削除しますか？')" />
+							</c:if>
+						</c:if>
+
+						</form></div>
 
 						<br />
 						-- コメント --
@@ -123,11 +169,45 @@
 											<span class="name"><c:out value="${comment.name}" /></span>
 										<div class="text"><pre><c:out value="${comment.text}" /></pre></div>
 										<div class="date"><fmt:formatDate value="${comment.insertDate}" pattern="yyyy/MM/dd HH:mm:ss" /></div>
+
 										</div>
 										<br />
 
-									</c:if>
+										<form action="home" method="post">
+											<c:if test="${loginUser.postId == 2 }">
+											<input type="hidden" name="id" value="${comment.id}">
+													<input type="submit" name="submit" value="削除する"
+													 		onclick="return confirm('本当にこのコメントを削除しますか？')" />
+											</c:if>
 
+											<c:if test="${loginUser.postId == 1 }">
+												<c:if test="${loginUser.id  == comment.userId}">
+													<input type="hidden" name="id" value="${comment.id}">
+
+															<input type="submit" name="submit" value="削除する"
+															 		onclick="return confirm('本当にこのコメントを削除しますか？')" />
+												</c:if>
+											</c:if>
+
+											<c:if test="${loginUser.postId == 3 }">
+												<c:if test="${loginUser.branchId == comment.branchId }">
+													<input type="hidden" name="id" value="${comment.id}">
+
+															<input type="submit" name="submit" value="削除する"
+															 		onclick="return confirm('本当にこのコメントを削除しますか？')" />
+												</c:if>
+											</c:if>
+
+											<c:if test="${loginUser.postId == 4 }">
+												<c:if test="${loginUser.id  == comment.userId}">
+													<input type="hidden" name="id" value="${comment.id}">
+															<input type="submit" name="submit" value="削除する"
+															 		onclick="return confirm('本当にこのコメントを削除しますか？')" />
+												</c:if>
+											</c:if>
+										</form>
+
+									</c:if>
 									</div>
 								</c:forEach>
 							</div>
@@ -135,8 +215,6 @@
 
 						<form action="comment" method="post"><br />
 						<input type="hidden" name="messageId" value="${message.messageId}">
-
-
 							<div class="form-area">
 								コメント :
 									<textarea name="comment" cols="50" rows="5" class="comment-box"></textarea>

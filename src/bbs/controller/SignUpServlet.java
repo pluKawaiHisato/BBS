@@ -44,20 +44,19 @@ public class SignUpServlet extends HttpServlet {
 		List<String> messages = new ArrayList<String>();
 
 		HttpSession session = request.getSession();
-
+System.out.println(request.getParameter("password"));
 		User editUser = getEditUser(request);
-		session.setAttribute("editUser", editUser);
+		request.setAttribute("editUser", editUser);
 
 		if (isValid(request, messages) == true)
 		{
 			getEditUser(request);
-
 			new UserService().register(editUser);
-
 			response.sendRedirect("manageUser");
 		}
 		else
 		{
+			session.setAttribute("editUser", editUser);
 			session.setAttribute("errorMessages", messages);
 			response.sendRedirect("signup");
 		}
@@ -65,25 +64,66 @@ public class SignUpServlet extends HttpServlet {
 
 	private boolean isValid(HttpServletRequest request, List<String> messages)
 	{
+		String name = request.getParameter("name");
 		String loginId = request.getParameter("loginId");
 		String password = request.getParameter("password");
 		String checkPassword = request.getParameter("checkPassword");
+		int branchId = Integer.parseInt(request.getParameter("branchId"));
+		int postId = Integer.parseInt(request.getParameter("postId"));
+
+		UserService userService = new UserService();
+		User checkUser = userService.getNewCheckSameLoginId(loginId);
 
 		if (StringUtils.isEmpty(loginId) == true) {
 			messages.add("ログインIDを入力してください");
 		}
-		if (StringUtils.isEmpty(password) == true) {
-			messages.add("パスワードを入力してください");
-		}
-		if (loginId.length() < 6)
+		else if (loginId.length() < 6)
 		{
 			messages.add("ログインIDは6文字以上20文字以下で設定してください");
 		}
-		if (!password.equals(checkPassword))
+
+		if (StringUtils.isEmpty(password) == true)
+		{
+			messages.add("パスワードを入力してください");
+		}
+		if (StringUtils.isEmpty(password) != true)
+		{
+			if ( password.length() < 6)
+			{
+				messages.add("パスワードは6文字以上255文字以下で設定してください");
+			}
+			if ( password.length() > 255)
+			{
+				messages.add("パスワードは6文字以上255文字以下で設定してください");
+			}
+		}
+		if (StringUtils.isEmpty(checkPassword) == true) {
+			messages.add("確認用パスワードを入力してください");
+		}
+		else if (!password.equals(checkPassword))
 		{
 			messages.add("確認用パスワードが違います");
 
 		}
+
+		if (StringUtils.isEmpty(name) == true) {
+			messages.add("名前を入力してください");
+		}
+
+		if (branchId == 0)
+		{
+			messages.add("所属を選択してください");
+		}
+		if (postId == 0)
+		{
+			messages.add("部署・役職を選択してください");
+		}
+		if (checkUser != null)
+		{
+			messages.add("このログインIDはすでに使用されています");
+		}
+
+
 		if (messages.size() == 0)
 		{
 			return true;
@@ -99,8 +139,8 @@ public class SignUpServlet extends HttpServlet {
 		editUser.setLoginId(request.getParameter("loginId"));
 		editUser.setName(request.getParameter("name"));
 		editUser.setPassword(request.getParameter("password"));
-		editUser.setBranchId(Integer.parseInt(request.getParameter("branch")));
-		editUser.setPostId(Integer.parseInt(request.getParameter("post")));
+		editUser.setBranchId(Integer.parseInt(request.getParameter("branchId")));
+		editUser.setPostId(Integer.parseInt(request.getParameter("postId")));
 
 		return editUser;
 	}

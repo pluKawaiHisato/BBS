@@ -11,6 +11,8 @@ public class User implements Serializable
 	private String loginId;
 	private String name;
 	private String password;
+	private String branchName;
+	private String postName;
 	private int branchId;
 	private int postId ;
 	private Date insertDate;
@@ -37,16 +39,32 @@ public class User implements Serializable
 		this.loginId = loginId ;
 	}
 
+	public String getBranchName()
+	{
+		return branchName;
+	}
+	public void setBranchName(String branchName)
+	{
+		this.branchName = branchName;
+	}
+
+	public String getPostName()
+	{
+		return postName;
+	}
+	public void setPostName(String postName)
+	{
+		this.postName = postName;
+	}
+
 	public String getName()
 	{
 		return name;
 	}
-
 	public void setName(String name)
 	{
 		this.name = name;
 	}
-
 	public int getBranchId()
 	{
 		return branchId;

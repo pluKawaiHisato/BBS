@@ -9,6 +9,7 @@
 <title>新規投稿画面</title>
 </head>
 <body>
+<h3>新規投稿</h3>
 <div class="main-contents">
 <form action="newMessages" method="post"><br />
 
@@ -23,20 +24,17 @@
 	<c:remove var="errorMessages" scope="session"/>
 </c:if>
 
-カテゴリー :
-	<select name="category">
-		<option value="">(選択してください)</option>
-		<option value="予定">予定</option>
-		<option value="人事">人事</option>
-		<option value="イベント">イベント</option>
-	</select>
 
+<div class="form-area">
+カテゴリー :
+			<textarea name="category" cols="12" rows="1" class="newMessage-box">${editMessage.category}</textarea>
+	</div>
 	<br />
 	<br />
 
 	<div class="form-area">
 		件名 :
-			<textarea name="title" cols="50" rows="1" class="newMessage-box"></textarea>
+			<textarea name="title" cols="50" rows="1" class="newMessage-box">${editMessage.title}</textarea>
 	</div>
 
 	<br />
@@ -44,7 +42,7 @@
 
 <div class="form-area">
 	新規投稿 :
-			<textarea style="width: 60%; height:90px" name="text" cols="70" rows="15" class="newMessage-box" wrap="hard"></textarea>
+			<textarea name="text" cols="70" rows="15" class="newMessage-box" >${editMessage.text}</textarea>
 			<br />
 			<input type="submit" value="新規投稿">
 			<br />

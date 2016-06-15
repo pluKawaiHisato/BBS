@@ -11,6 +11,8 @@ public class UserMessage implements Serializable
 	private String name;
 	private int id;
 	private int userId;
+	private int branchId;
+	private int postId;
 	private int messageId;
 	private String category;
 	private String title;
@@ -52,6 +54,25 @@ public class UserMessage implements Serializable
 	{
 		this.userId = userId;
 	}
+
+	public int getBranchId()
+	{
+		return branchId;
+	}
+	public void setBranchId(int branchId)
+	{
+		this.branchId = branchId;
+	}
+
+	public int getPostId()
+	{
+		return postId;
+	}
+	public void setPostId(int postId)
+	{
+		this.postId = postId;
+	}
+
 	public int getMessageId()
 	{
 		return messageId;

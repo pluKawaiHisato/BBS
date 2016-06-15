@@ -44,7 +44,7 @@ public class CommentServlet extends HttpServlet
 		else
 		{
 
-			session.setAttribute("ErrorMessages", messages);
+			session.setAttribute("errorMessages", messages);
 			response.sendRedirect("home");
 		}
 	}
@@ -54,15 +54,15 @@ public class CommentServlet extends HttpServlet
 
 		String comment = request.getParameter("comment");
 
-		System.out.println(comment);
+
 
 		if (StringUtils.isEmpty(comment) == true)
 		{
 			messages.add("コメントを入力してください");
 		}
-		if (500 < comment.length())
+		else if (500 < comment.length())
 		{
-			messages.add("本文は1000文字以下で入力してください");
+			messages.add("コメントは500文字以下で入力してください");
 		}
 		if (messages.size() == 0)
 		{

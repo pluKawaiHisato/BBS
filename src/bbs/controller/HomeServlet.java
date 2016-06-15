@@ -94,23 +94,25 @@ public class HomeServlet extends HttpServlet
 
 	}
 
-//	@Override
-//	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
-//	{
-//		HttpSession session = request.getSession();
-//
-//		List<String> messages = new ArrayList<String>();
-//
-//		if(isValid(request, messages) == true)
-//		{
-//			response.sendRedirect("home");
-//		}
-//		else
-//		{
-//			session.setAttribute("articleErrorMessages", messages);
-//			response.sendRedirect("home");
-//		}
-//	}
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
+	{
+
+		if (request.getParameter("messageId") == null)
+		{
+			int deleteCommentId = Integer.parseInt(request.getParameter("id"));
+			new CommentService().deleteComment(deleteCommentId);
+			response.sendRedirect("home");
+
+		}
+		else
+		{
+			int deleteMessageId = Integer.parseInt(request.getParameter("messageId"));
+			new MessageService().deleteMessage(deleteMessageId);
+			response.sendRedirect("home");
+		}
+
+	}
 
 	private boolean isValid(HttpServletRequest request, List<String> messages, List<UserMessage> searchMessages)
 	{

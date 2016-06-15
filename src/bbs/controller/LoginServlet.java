@@ -38,8 +38,12 @@ public class LoginServlet extends HttpServlet
 
 		HttpSession session = request.getSession();
 
-		
+
+		User editUser = getEditUser(request);
+
+
 		session.setAttribute("loginUser", user);
+
 		if (user != null)
 		{
 			if ( user.getStatus() == 1)
@@ -47,10 +51,10 @@ public class LoginServlet extends HttpServlet
 				List<String> messages = new ArrayList<String>();
 				messages.add("このアカウントは現在使用できません");
 				session.setAttribute("errorMessages", messages);
-				response.sendRedirect("login");
+				request.setAttribute("editUser", editUser);
+				request.getRequestDispatcher("login.jsp").forward(request, response);
 			} else {
 				response.sendRedirect("home");
-	//			session.removeAttribute("loginUser");
 			}
 
 		}
@@ -58,20 +62,21 @@ public class LoginServlet extends HttpServlet
 		{
 			List<String> messages = new ArrayList<String>();
 			messages.add("ログインに失敗しました");
+			request.setAttribute("editUser", editUser);
 			session.setAttribute("errorMessages", messages);
-			response.sendRedirect("login");
+			request.getRequestDispatcher("login.jsp").forward(request, response);
 		}
 
 	}
 
-//	private User getLoginUser(HttpServletRequest request) throws IOException, ServletException
-//	{
-//		User loginUser = new User();
-//
-//		loginUser.setLoginId(request.getParameter("loginId"));
-//		loginUser.setPassword(request.getParameter("password"));
-//
-//		return loginUser;
-//	}
+	private User getEditUser(HttpServletRequest request) throws IOException, ServletException
+	{
+		User editUser = new User();
+
+		editUser.setLoginId(request.getParameter("loginId"));
+
+
+		return editUser;
+	}
 }
 

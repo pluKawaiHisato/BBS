@@ -33,6 +33,8 @@ public class NewMessagesServlet extends HttpServlet
 	{
 		HttpSession session = request.getSession();
 
+		Message editMessage = getEditMessage(request);
+
 		List<String> messages = new ArrayList<String>();
 
 		if(isValid(request, messages) == true)
@@ -52,7 +54,8 @@ public class NewMessagesServlet extends HttpServlet
 		else
 		{
 			session.setAttribute("errorMessages", messages);
-			response.sendRedirect("newMessages");
+			request.setAttribute("editMessage", editMessage);
+			request.getRequestDispatcher("newmessages.jsp").forward(request, response);
 		}
 	}
 
@@ -64,21 +67,27 @@ public class NewMessagesServlet extends HttpServlet
 
 		if (StringUtils.isEmpty(category) == true)
 		{
-			messages.add("カテゴリーを選択してください");
+			messages.add("カテゴリーを入力してください");
 		}
+		else if (10 < category.length())
+		{
+			messages.add("カテゴリーは10文字以内で入力してください");
+		}
+
 		if (StringUtils.isEmpty(title) == true)
 		{
 			messages.add("件名を入力してください");
 		}
-		if (50 < title.length())
+		else if (50 < title.length())
 		{
 			messages.add("件名は50文字以下で入力してください");
 		}
+
 		if (StringUtils.isEmpty(message) == true)
 		{
 			messages.add("メッセージを入力してください");
 		}
-		if (1000 < message.length())
+		else if (1000 < message.length())
 		{
 			messages.add("本文は1000文字以下で入力してください");
 		}
@@ -91,4 +100,18 @@ public class NewMessagesServlet extends HttpServlet
 			return false;
 		}
 	}
+
+	private Message getEditMessage(HttpServletRequest request) throws IOException, ServletException
+	{
+		Message editMessage = new Message();
+
+		editMessage.setText(request.getParameter("text"));
+		editMessage.setTitle(request.getParameter("title"));
+		editMessage.setCategory(request.getParameter("category"));
+
+
+
+		return editMessage;
+	}
+
 }

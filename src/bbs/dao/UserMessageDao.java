@@ -163,6 +163,8 @@ public class UserMessageDao
 				String name = rs.getString("name");
 				int id = rs.getInt("id");
 				int userId = rs.getInt("user_id");
+				int branchId = rs.getInt("branch_id");
+				int postId = rs.getInt("post_id");
 				int messageId = rs.getInt("message_id");
 				String category = rs.getString("category");
 				String title = rs.getString("title");
@@ -174,6 +176,8 @@ public class UserMessageDao
 				message.setName(name);
 				message.setId(id);
 				message.setUserId(userId);
+				message.setBranchId(branchId);
+				message.setPostId(postId);
 				message.setMessageId(messageId);
 				message.setCategory(category);
 				message.setTitle(title);

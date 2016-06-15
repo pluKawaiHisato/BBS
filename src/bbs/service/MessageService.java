@@ -164,6 +164,7 @@ public class MessageService {
 
 	private static final int LIMIT_NUM = 1000;
 
+
 	public List<UserMessage> getMessage()
 	{
 
@@ -179,6 +180,35 @@ public class MessageService {
 			commit(connection);
 
 			return ret;
+		}
+		catch (RuntimeException e)
+		{
+			rollback(connection);
+			throw e;
+		}
+		catch (Error e)
+		{
+			rollback(connection);
+			throw e;
+		}
+		finally
+		{
+			close(connection);
+		}
+	}
+
+	public void deleteMessage(int messageId)
+	{
+		Connection connection = null;
+		try
+		{
+			connection = getConnection();
+
+			MessageDao messageDao = new MessageDao();
+			messageDao.deleteMessage(connection, messageId);
+
+
+			commit(connection);
 		}
 		catch (RuntimeException e)
 		{

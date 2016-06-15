@@ -10,6 +10,7 @@
 	<link href="./css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
+<h3>ログイン</h3>
 <div class="main-contents">
 
 <c:if test="${ not empty errorMessages }">
@@ -25,7 +26,7 @@
 
 <form action="login" method="post"><br />
 	<label for="loginId">ログインID</label>
-	<input name="loginId" value="${loginUser.loginId}" id="loginId"/> <br />
+	<input name="loginId" value="${editUser.loginId}" id="loginId"/> <br />
 
 	<label for="password">パスワード</label>
 	<input name="password" type="password" id="password"/> <br />
