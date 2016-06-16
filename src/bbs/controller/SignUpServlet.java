@@ -44,7 +44,7 @@ public class SignUpServlet extends HttpServlet {
 		List<String> messages = new ArrayList<String>();
 
 		HttpSession session = request.getSession();
-System.out.println(request.getParameter("password"));
+
 		User editUser = getEditUser(request);
 		request.setAttribute("editUser", editUser);
 
@@ -52,13 +52,23 @@ System.out.println(request.getParameter("password"));
 		{
 			getEditUser(request);
 			new UserService().register(editUser);
+
+			messages.add("新規ユーザーの登録が完了しました");
+			session.setAttribute("completeMessages", messages);
+
 			response.sendRedirect("manageUser");
 		}
 		else
 		{
-			session.setAttribute("editUser", editUser);
+			List<Branch> branches = new BranchService().getBranch();
+			request.setAttribute("branches", branches);
+
+			List<Post> posts = new PostService().getPost();
+			request.setAttribute("posts", posts);
+
+			request.setAttribute("editUser", editUser);
 			session.setAttribute("errorMessages", messages);
-			response.sendRedirect("signup");
+			request.getRequestDispatcher("signup.jsp").forward(request, response);
 		}
 	}
 
@@ -74,10 +84,28 @@ System.out.println(request.getParameter("password"));
 		UserService userService = new UserService();
 		User checkUser = userService.getNewCheckSameLoginId(loginId);
 
-		if (StringUtils.isEmpty(loginId) == true) {
+		if (StringUtils.isBlank(name) == true)
+		{
+			messages.add("名前を入力してください");
+		}
+		else if (name.length() > 10)
+		{
+			messages.add("名前は10文字以下で設定してください");
+		}
+
+		if (checkUser != null)
+		{
+			messages.add("このログインIDはすでに使用されています");
+		}
+		if (StringUtils.isBlank(loginId) == true)
+		{
 			messages.add("ログインIDを入力してください");
 		}
 		else if (loginId.length() < 6)
+		{
+			messages.add("ログインIDは6文字以上20文字以下で設定してください");
+		}
+		else if (loginId.length() > 20)
 		{
 			messages.add("ログインIDは6文字以上20文字以下で設定してください");
 		}
@@ -102,12 +130,7 @@ System.out.println(request.getParameter("password"));
 		}
 		else if (!password.equals(checkPassword))
 		{
-			messages.add("確認用パスワードが違います");
-
-		}
-
-		if (StringUtils.isEmpty(name) == true) {
-			messages.add("名前を入力してください");
+			messages.add("パスワードが一致しません");
 		}
 
 		if (branchId == 0)
@@ -118,10 +141,7 @@ System.out.println(request.getParameter("password"));
 		{
 			messages.add("部署・役職を選択してください");
 		}
-		if (checkUser != null)
-		{
-			messages.add("このログインIDはすでに使用されています");
-		}
+
 
 
 		if (messages.size() == 0)

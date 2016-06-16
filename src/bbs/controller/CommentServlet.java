@@ -28,7 +28,7 @@ public class CommentServlet extends HttpServlet
 
 		List<String> messages = new ArrayList<String>();
 
-		if(isValid(request, messages) == true)
+		if(isValid(request, messages))
 		{
 			User user = (User) session.getAttribute("loginUser");
 
@@ -37,13 +37,17 @@ public class CommentServlet extends HttpServlet
 			comment.setUserId(user.getId());
 			comment.setMessageId(Integer.parseInt(request.getParameter("messageId")));
 
+			messages.add("コメントを投稿しました");
+			session.setAttribute("completeMessages", messages);
+
 			new CommentService().register(comment);
 
+
+System.out.println(messages);
 			response.sendRedirect("home");
 		}
 		else
 		{
-
 			session.setAttribute("errorMessages", messages);
 			response.sendRedirect("home");
 		}

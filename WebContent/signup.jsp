@@ -8,48 +8,57 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>新規ユーザー登録画面</title>
+<link href="./css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <h3>新規ユーザー登録</h3>
 <div class="main-contents">
 
-<c:if test="${ not empty errorMessages }">
-	<div class="errorMessages">
-		<ul>
-			<c:forEach items="${errorMessages}" var="message">
-				<li><c:out value="${message}" />
-			</c:forEach>
-		</ul>
-	</div>
-	<c:remove var="errorMessages" scope="session"/>
-</c:if>
+		<div class="errorMessages">
+			<c:if test="${ not empty errorMessages }">
+					<ul>
+						<c:forEach items="${errorMessages}" var="message">
+							<li><c:out value="${message}" />
+						</c:forEach>
+					</ul>
+
+				<c:remove var="errorMessages" scope="session"/>
+			</c:if>
+		</div>
 
 
 <form action="signup" method="post"> <br />
-	<label for="account">名前</label>
+	<label for="account">名前:(10文字以内で入力してください)</label><br />
 	<input name="name" value="${editUser.name}" id="name"/><br />
+	<br /><br />
 
-	<label for="loginId">ログインID</label>
+	<label for="loginId">ログインID:(6文字以上20文字以内で入力してください)</label><br />
 	<input name="loginId" value="${editUser.loginId}" id="loginId"/><br />
+	<br /><br />
 
-	<label for="password">パスワード</label>
-	<input name="password" type="password" id="password"/> <br />
+	<label for="password">パスワード:(6文字以上225文字以内で入力してください)</label><br />
+	<input name="password" type="password" size="50" id="password"/> <br />
+	<br /><br />
 
-	<label for="checkPassword">パスワード(確認)</label>
-	<input name="checkPassword" type="password" id="checkPassword"/> <br />
+	<label for="checkPassword">確認用パスワード:(パスワードをもう一度入力してください)</label><br />
+	<input name="checkPassword" type="password" size="50" id="checkPassword"/> <br />
+	<br /><br />
 
-	<label for="branchId">所属</label>
+	<label for="branchId">所属</label><br />
 	<select name="branchId" id =branchId>
 	<option value="0">(選択してください)</option>
+
 		<c:forEach items="${branches}" var="branch">
-			<option value="${branch.id}" <c:if test="${ edittUser.branchId == branch.id }">selected='selected'</c:if> >
+			<option value="${branch.id}" <c:if test="${ editUser.branchId == branch.id }">selected='selected'</c:if> >
 			<c:out value="${branch.getName()}" />
 			</option>
 		</c:forEach>
+
 	</select>
 	<br />
+	<br />
 
-	<label for="postId">部署・役職</label>
+	<label for="postId">部署・役職</label><br />
 
 	<select name="postId" id=postId>
 	<option value="0">(選択してください)</option>
@@ -60,8 +69,11 @@
 	</select>
 	<br />
 
+	<br />
+
 	<c:remove var="editUser" scope="session"/>
 	<input type="submit" value="登録" /> <br />
+	<br />
 	<a href="manageUser">戻る</a>
 </form>
 </div>

@@ -8,6 +8,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>掲示板ホーム画面</title>
+<link href="css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 
@@ -20,10 +21,10 @@
 		<a href="manageUser">ユーザー管理画面</a>
 		</c:if>
 		<a href="newMessages">新規投稿画面</a>
-		<a href="logout">ログアウト</a>
-
+		<a href="logout"><button>ログアウト</button></a>
+</div>
+		<div class="errorMessages">
 			<c:if test="${ not empty errorMessages }">
-
 					<ul>
 						<c:forEach items="${errorMessages}" var="message">
 							<li><c:out value="${message}" />
@@ -32,16 +33,19 @@
 
 				<c:remove var="errorMessages" scope="session"/>
 			</c:if>
+		</div>
 
+		<div class="completeMessages">
 			<c:if test="${ not empty completeMessages }">
 			<ul>
-						<c:forEach items="${completerMessages}" var="message">
-							<li><c:out value="${message}" />
+						<c:forEach items="${completeMessages}" var="completeMessage">
+							<li><c:out value="${completeMessage}" />
 						</c:forEach>
 					</ul>
 
 				<c:remove var="completeMessages" scope="session"/>
 			</c:if>
+		</div>
 
 		<form action="home" method="get">
 			<div class="Search">
@@ -167,11 +171,11 @@
 										<div class="loginId-name">
 											<span class="loginId"><c:out value="${comment.loginId}" /></span>
 											<span class="name"><c:out value="${comment.name}" /></span>
-										<div class="text"><pre><c:out value="${comment.text}" /></pre></div>
+										<div class="comment-text"><pre><c:out value="${comment.text}" /></pre></div>
 										<div class="date"><fmt:formatDate value="${comment.insertDate}" pattern="yyyy/MM/dd HH:mm:ss" /></div>
 
 										</div>
-										<br />
+
 
 										<form action="home" method="post">
 											<c:if test="${loginUser.postId == 2 }">
@@ -217,6 +221,7 @@
 						<input type="hidden" name="messageId" value="${message.messageId}">
 							<div class="form-area">
 								コメント :
+
 									<textarea name="comment" cols="50" rows="5" class="comment-box"></textarea>
 									<br />
 									<input type="submit" value="コメント">
@@ -232,12 +237,6 @@
 
 
 	</div>
-
-
-
-</div>
-
-
 
 </body>
 </html>

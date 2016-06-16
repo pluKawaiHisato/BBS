@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.mysql.jdbc.StringUtils;
 
@@ -77,7 +78,7 @@ public class HomeServlet extends HttpServlet
 
 
 
-		if(isValid(request, errorMessages, searchMessages) == true)
+		if(isValid(request, errorMessages, searchMessages) )
 		{
 			request.setAttribute("articleErrorMessages", errorMessages);
 		}
@@ -98,10 +99,18 @@ public class HomeServlet extends HttpServlet
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
 	{
 
+		HttpSession session = request.getSession();
+
+		List<String> messages = new ArrayList<String>();
+
 		if (request.getParameter("messageId") == null)
 		{
 			int deleteCommentId = Integer.parseInt(request.getParameter("id"));
 			new CommentService().deleteComment(deleteCommentId);
+
+			messages.add("コメントの削除が完了しました");
+			session.setAttribute("completeMessages", messages);
+
 			response.sendRedirect("home");
 
 		}
@@ -109,6 +118,10 @@ public class HomeServlet extends HttpServlet
 		{
 			int deleteMessageId = Integer.parseInt(request.getParameter("messageId"));
 			new MessageService().deleteMessage(deleteMessageId);
+
+			messages.add("記事の削除が完了しました");
+			session.setAttribute("completeMessages", messages);
+
 			response.sendRedirect("home");
 		}
 

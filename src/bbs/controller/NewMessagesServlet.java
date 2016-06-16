@@ -49,6 +49,9 @@ public class NewMessagesServlet extends HttpServlet
 
 			new MessageService().register(message);
 
+			messages.add("記事の投稿が完了しました");
+			session.setAttribute("completeMessages", messages);
+
 			response.sendRedirect("home");
 		}
 		else
@@ -85,7 +88,7 @@ public class NewMessagesServlet extends HttpServlet
 
 		if (StringUtils.isEmpty(message) == true)
 		{
-			messages.add("メッセージを入力してください");
+			messages.add("本文を入力してください");
 		}
 		else if (1000 < message.length())
 		{
