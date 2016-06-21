@@ -8,15 +8,17 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>ログイン</title>
 	<link href="./css/style.css" rel="stylesheet" type="text/css">
-	<style>
-		div.errorMessages{color:red};
-	</style>
+
 </head>
 <body>
-<h3>ログイン</h3>
-<div class="main-contents">
 
-		<div class="errorMessages">
+<div class="login-form">
+<div class="login-title">
+掲示板
+</div>
+
+
+<div class="errorMessages">
 			<c:if test="${ not empty errorMessages }">
 					<ul>
 						<c:forEach items="${errorMessages}" var="message">
@@ -28,17 +30,21 @@
 		</div>
 
 
-
 <form action="login" method="post"><br />
-	<label for="loginId">ログインID</label>
+	<label for="loginId">ログインID</label><br />
 	<input name="loginId" value="${editUser.loginId}" id="loginId"/> <br />
+	<br />
+	<br />
 
-	<label for="password">パスワード</label>
+	<label for="password">パスワード</label><br />
 	<input name="password" type="password" id="password"/> <br />
+	<br />
+	<br />
 
-	<input type="submit" value="ログイン" /> <br />
+	<input id="submit" type="submit" value="ログイン" /> <br />
 </form>
-
 </div>
+
+
 </body>
 </html>

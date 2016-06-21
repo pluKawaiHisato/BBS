@@ -11,8 +11,25 @@
 <link href="./css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<h3>新規ユーザー登録</h3>
+
+<div class="bbs">
+掲示板
+</div>
+
+
+<div class="header">
+
+<div class="header-text">
+		<a href="manageUser"> < ユーザー管理画面</a>
+</div>
+
+</div>
+
 <div class="main-contents">
+
+<div class="contents-title">
+新規ユーザー登録
+</div>
 
 		<div class="errorMessages">
 			<c:if test="${ not empty errorMessages }">
@@ -26,7 +43,7 @@
 			</c:if>
 		</div>
 
-
+<div class="form-area">
 <form action="signup" method="post"> <br />
 	<label for="account">名前:(10文字以内で入力してください)</label><br />
 	<input name="name" value="${editUser.name}" id="name"/><br />
@@ -72,10 +89,12 @@
 	<br />
 
 	<c:remove var="editUser" scope="session"/>
-	<input type="submit" value="登録" /> <br />
+	<input id="submit" type="submit" value="登録" /> <br />
 	<br />
-	<a href="manageUser">戻る</a>
+
 </form>
+</div>
+
 </div>
 
 

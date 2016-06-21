@@ -49,7 +49,7 @@ public class LoginServlet extends HttpServlet
 			if ( user.getStatus() == 1)
 			{
 				List<String> messages = new ArrayList<String>();
-				messages.add("このアカウントは現在使用できません");
+				messages.add("ログインに失敗しました");
 				session.setAttribute("errorMessages", messages);
 				request.setAttribute("editUser", editUser);
 				request.getRequestDispatcher("login.jsp").forward(request, response);

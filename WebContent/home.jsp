@@ -12,17 +12,29 @@
 </head>
 <body>
 
-<h3>掲示板ホーム</h3>
-<div class="main-contents">
+
+<div class="bbs">
+掲示板
+</div>
 
 <div class="header">
 
+<div class="header-text">
 		<c:if test="${ loginUser.getPostId() == 1 }">
 		<a href="manageUser">ユーザー管理画面</a>
 		</c:if>
 		<a href="newMessages">新規投稿画面</a>
 		<a href="logout"><button>ログアウト</button></a>
 </div>
+
+</div>
+
+<div class="main-contents">
+
+<div class="contents-title">
+ホーム
+</div>
+
 		<div class="errorMessages">
 			<c:if test="${ not empty errorMessages }">
 					<ul>
@@ -34,6 +46,7 @@
 				<c:remove var="errorMessages" scope="session"/>
 			</c:if>
 		</div>
+
 
 		<div class="completeMessages">
 			<c:if test="${ not empty completeMessages }">
@@ -48,7 +61,7 @@
 		</div>
 
 		<form action="home" method="get">
-			<div class="Search">
+			<div class="search">
 			<br />
 			カテゴリー検索
 
@@ -81,17 +94,20 @@
 				<c:if test="${ not empty endDate }">
 					<input type="date" name="endDate" value="${endDate}">
 				</c:if>
-				<input type="submit" value="検索する">
+				<input id="submit" type="submit" value="検索する">
 
 			</div>
 		</form>
 
+			<a href="home"><button>全件表示</button></a>
 
 
 
 
 		<div class="messages">
-		＝＝＝＝＝＝＝＝＝＝＝＝＝   記事一覧  ＝＝＝＝＝＝＝＝＝＝＝＝＝
+		<div class="article-list">
+		   記事一覧
+		</div>
 
 
 
@@ -108,16 +124,14 @@
 
 				<c:forEach items="${messages}" var="message">
 
-					<div class="message">
-					<br />
-					== 記事内容 ==
 
-					<br />
+					<div class="article">
 
+					<h5><span>投稿記事</span></h5>
 
 						<div class="loginId-name">
 							<span class="loginId"><c:out value="${message.loginId}" /></span>
-							<span class="name"><c:out value="${message.name}" /></span>
+							<span class="name"><c:out value="${message.name}" /></span></div>
 						<div class="category">カテゴリー：<c:out value="${message.category}" /></div>
 						<div class="title">件名：<c:out value="${message.title}" /></div>
 						<div class="text">本文：<pre><c:out value="${message.text}" /></pre></div>
@@ -127,14 +141,14 @@
 						<form action="home" method="post">
 						<c:if test="${loginUser.postId == 2 }">
 						<input type="hidden" name="messageId" value="${message.messageId}">
-								<input type="submit" name="submit" value="削除する"
+								<input id="submit" type="submit" name="submit" value="削除する"
 								 		onclick="return confirm('本当にこの記事を削除しますか？')" />
 						</c:if>
 
 						<c:if test="${loginUser.postId == 1 }">
 							<c:if test="${loginUser.id  == message.userId}">
 								<input type="hidden" name="messageId" value="${message.messageId}">
-										<input type="submit" name="submit" value="削除する"
+										<input id="submit" type="submit" name="submit" value="削除する"
 										 		onclick="return confirm('本当にこの記事を削除しますか？')" />
 							</c:if>
 						</c:if>
@@ -142,7 +156,7 @@
 						<c:if test="${loginUser.postId == 3 }">
 							<c:if test="${loginUser.branchId == message.branchId }">
 								<input type="hidden" name="messageId" value="${message.messageId}">
-										<input type="submit" name="submit" value="削除する"
+										<input id="submit" type="submit" name="submit" value="削除する"
 										 		onclick="return confirm('本当にこの記事を削除しますか？')" />
 							</c:if>
 						</c:if>
@@ -150,7 +164,7 @@
 						<c:if test="${loginUser.postId == 4 }">
 							<c:if test="${loginUser.id  == message.userId}">
 								<input type="hidden" name="messageId" value="${message.messageId}">
-										<input type="submit" name="submit" value="削除する"
+										<input id="submit" type="submit" name="submit" value="削除する"
 										 		onclick="return confirm('本当にこの記事を削除しますか？')" />
 							</c:if>
 						</c:if>
@@ -158,7 +172,11 @@
 						</form></div>
 
 						<br />
-						-- コメント --
+						</div>
+
+						<div class="comment-title">
+						コメント
+						</div>
 
 
 
@@ -168,7 +186,7 @@
 									<div class="comment">
 
 									<c:if test="${message.messageId==comment.messageId}">
-										<div class="loginId-name">
+										<div class="one-comment">
 											<span class="loginId"><c:out value="${comment.loginId}" /></span>
 											<span class="name"><c:out value="${comment.name}" /></span>
 										<div class="comment-text"><pre><c:out value="${comment.text}" /></pre></div>
@@ -180,7 +198,7 @@
 										<form action="home" method="post">
 											<c:if test="${loginUser.postId == 2 }">
 											<input type="hidden" name="id" value="${comment.id}">
-													<input type="submit" name="submit" value="削除する"
+													<input id="submit" type="submit" name="submit" value="削除する"
 													 		onclick="return confirm('本当にこのコメントを削除しますか？')" />
 											</c:if>
 
@@ -188,7 +206,7 @@
 												<c:if test="${loginUser.id  == comment.userId}">
 													<input type="hidden" name="id" value="${comment.id}">
 
-															<input type="submit" name="submit" value="削除する"
+															<input id="submit" type="submit" name="submit" value="削除する"
 															 		onclick="return confirm('本当にこのコメントを削除しますか？')" />
 												</c:if>
 											</c:if>
@@ -197,7 +215,7 @@
 												<c:if test="${loginUser.branchId == comment.branchId }">
 													<input type="hidden" name="id" value="${comment.id}">
 
-															<input type="submit" name="submit" value="削除する"
+															<input id="submit" type="submit" name="submit" value="削除する"
 															 		onclick="return confirm('本当にこのコメントを削除しますか？')" />
 												</c:if>
 											</c:if>
@@ -205,7 +223,7 @@
 											<c:if test="${loginUser.postId == 4 }">
 												<c:if test="${loginUser.id  == comment.userId}">
 													<input type="hidden" name="id" value="${comment.id}">
-															<input type="submit" name="submit" value="削除する"
+															<input id="submit" type="submit" name="submit" value="削除する"
 															 		onclick="return confirm('本当にこのコメントを削除しますか？')" />
 												</c:if>
 											</c:if>
@@ -213,30 +231,31 @@
 
 									</c:if>
 									</div>
+
 								</c:forEach>
 							</div>
 
 
 						<form action="comment" method="post"><br />
 						<input type="hidden" name="messageId" value="${message.messageId}">
-							<div class="form-area">
+							<div class="new-comment">
 								コメント :
 
 									<textarea name="comment" cols="50" rows="5" class="comment-box"></textarea>
 									<br />
-									<input type="submit" value="コメント">
+									<input id="submit" type="submit" value="コメント">
 							</div>
 							<br />
 
 						</form>
 
-					</div>
-					</div>
+
+
 				</c:forEach>
 			</div>
 
 
-	</div>
+
 
 </body>
 </html>

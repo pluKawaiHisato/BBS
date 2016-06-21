@@ -10,10 +10,23 @@
 <link href="./css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<h3>新規投稿</h3>
-<div class="main-contents">
+
+<div class="bbs">
+掲示板
+</div>
+
 <div class="header">
-	<a href="home">ホーム</a>
+
+<div class="header-text">
+		<a href="home">ホーム</a>
+</div>
+
+</div>
+
+<div class="main-contents">
+
+<div class="contents-title">
+新規投稿
 </div>
 
 		<div class="errorMessages">
@@ -34,26 +47,23 @@
 <form action="newMessages" method="post"><br />
 
 <div class="form-area">
-カテゴリー :(10文字以内で入力してください)<br />
+カテゴリー ： (10文字以内で入力してください)<br />
 			<input type="text" class="catecory" name="category" value="${editMessage.category}">
-	</div>
+
 	<br />
 	<br />
 
-	<div class="form-area">
-		件名 :(50文字以内で入力してください)<br />
+		件名 ： (50文字以内で入力してください)<br />
 			<input type="text" size="50" class="title" name="title" value="${editMessage.title}">
-	</div>
 
  	<br />
 	<br />
 
-<div class="form-area">
-	本文:（1000文字以内で入力してください）<br />
-			<textarea name="text" cols="70" rows="15" class="newMessage-box" >${editMessage.text}</textarea>
+	本文 ： (1000文字以内で入力してください）<br />
+			<textarea name="text" id="main-article" cols="70" rows="15" class="newMessage-box" >${editMessage.text}</textarea>
 			<br />
 			<br />
-			<input type="submit" value="新規投稿">
+			<input id="submit" type="submit" value="新規投稿">
 			<br />
 
 
